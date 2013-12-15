@@ -1,48 +1,132 @@
-function start(el) {
-	var elem = $(el);
-	elem.parent().presentation.init();
-}
 
-(function ( $ ) {
+var presentation = (function() {
 
- 	$.fn.presentation = (function() {
-        function init (options) {
-			$(".slide").each( function(index) {
-				if (index == 0) 
-					$(this).addClass("active")
-				else
-					$(this).addClass("inactive")
+	var data = [];
+
+	var currentPres = null,
+		currentSlide = null;
+
+	var startSlide = 0;	
+
+
+	function initialization (options) {
+		
+		$(".presentation").each( function (index) {
+			var slides = [];
+			var mainElem = $(this);
+			var startLink = $( "<a href='#' class='start'>View presentation</a>" );
+			mainElem.append(startLink);
+
+			setAllSlideInactive();
+
+			mainElem.find(".slide").each( function(ind) {
+				slides.push(new slide(ind, $(this).attr("id")));
 			});
-			document.onkeydown = function(e) {
-	    		e = e || window.event;
-	    		switch(e.which || e.keyCode) {
-					case 37: 
-						console.log("Get Previous Slide");
-						getPreviousSlide();
-					break;
-					case 39: 
-						console.log("Get Next Slide");
-						getNextSlide();
-					break;
-					default: return;
+
+			data.push(slides);
+			console.log(data);
+		})
+		
+		setSlideFromURL();
+
+		$(".start").click(function() {
+			currentPres = $(this).parent().index();
+			currentSlide = startSlide;
+			setSlideActive(currentPres, currentSlide);
+		});
+
+		arrowsEventHandler();
+
+	}
+
+	function setSlideActive(currP, currS) {
+		setAllSlideInactive();
+		$("#" + data[currP][currS].slideId).addClass("active").removeClass("inactive");
+	}
+
+	function setAllSlideInactive() {
+		$(".slide").each( function(index) {
+			$(this).addClass("inactive").removeClass("actives");
+		})
+	}
+
+	function getSlideById(id) {
+		console.log(data.length)
+		for (var i = 0; i < data.length; i++) {
+			for (var _i = 0; _i < data[i].length; _i++){
+				if (data[i][_i].slideId == id) {
+					currentPres = i;
+					currentSlide = _i;
 				}
-				e.preventDefault();
 			}
 		}
-		function getNextSlide() {
-			if ($(".slide.active").next().is("div.slide")) {
-				$(".slide.active").next().removeClass("inactive").addClass("active");
-				$(".slide.active").first().removeClass("active").addClass("inactive");
-			}
-		}	
-		function getPreviousSlide() {
-			$(".slide.active").prev().removeClass("inactive").addClass("active");
-			$(".slide.active").next().removeClass("active").addClass("inactive");
-		}	
-		return {
-			init: init,
-			getNextSlide: getNextSlide
+		setSlideActive(currentPres, currentSlide);
+	}
+
+	function getIdBySlide() {
+		return data[currentPres][currentSlide].slideId;
+	}
+
+	function getNextSlide() {
+		if (data[currentPres][currentSlide + 1]) {
+			currentSlide += 1;
+			setSlideActive(currentPres, currentSlide);
+
+			var id = getIdBySlide();
+			setURLFromSlide(id);
 		}
-	})();
- }( jQuery ));
+	}	
+
+	function getPreviousSlide() {
+		if (data[currentPres][currentSlide - 1]) {
+			currentSlide -= 1;
+			setSlideActive(currentPres, currentSlide);
+
+			var id = getIdBySlide();
+			setURLFromSlide(id);
+		}
+	}	
+
+	// Get slide from hash
+	function setSlideFromURL() {
+		var	hash = window.location.hash;
+		var id = hash.replace('#','');
+		if (id) getSlideById(id);
+	}
+
+	function setURLFromSlide(id) {
+		window.location.hash = id;
+	}
+
+	// Set handlers for "arrow" keys 
+	function arrowsEventHandler() {
+		document.onkeydown = function(e) {
+			e = e || window.event;
+			switch(e.which || e.keyCode) {
+				case 37: 
+					console.log("Get Previous Slide");
+					getPreviousSlide();
+				break;
+				case 39: 
+					console.log("Get Next Slide");
+					getNextSlide();
+				break;
+				default: return;
+			}
+			e.preventDefault();
+		}
+
+	}
+
+	function slide(index, slide) {
+		this.id = index;
+		this.slideId = slide;
+	}
+
+	return {
+		initialization: initialization,
+	}
+})();
+
+
 

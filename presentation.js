@@ -1,35 +1,35 @@
 var presentation = (function() {
 
-	var data = [];
-
-	var currentPres = null,
-		currentSlide = null;
-
-	var startSlide = 0;	
-
+	var data = [], // Presentation array
+		currentPres = null, // Current presentation (index)
+		currentSlide = null, // Current slide (index)
+		startSlide = 0;	// Start slide
 
 	function initialization (options) {
 		
 		$(".presentation").each( function (index) {
-			var slides = [];
-			var mainElem = $(this);
-			var startLink = $( "<span class='start'>View presentation</span>" );
+			var slides = [],
+				mainElem = $(this),
+				startLink = $( "<span class='start'>View presentation</span>" );
 			mainElem.append(startLink);
 
 			setAllSlideInactive();
 
+			// Set slides array
 			mainElem.find(".slide").each( function(ind) {
 				slides.push(new slide(ind, $(this).attr("id")));
 			});
 
+			// Set presentation array
 			data.push(slides);
-			console.log(data);
 		})
 		
 		showAllMiniatures();
 
 		setSlideFromURL();
 
+
+		// Establish event hanlers
 		$(".start").click(function(event) {
 			showAllMiniatures();
 			var indexOfPar = $(this).parent().index() - 1 // number of element in array starts from 0 (zero)
@@ -55,7 +55,6 @@ var presentation = (function() {
 
 	function setSlideActive() {
 		setAllSlideInactive();
-		console.log(currentPres + " " + currentSlide);
 		var id = getIdBySlide();
 		$("#" + id).addClass("active").removeClass("inactive");
 		setURLFromSlide(id);
@@ -115,19 +114,17 @@ var presentation = (function() {
 			e = e || window.event;
 			switch(e.which || e.keyCode) {
 				case 37: 
-					console.log("Get Previous Slide");
 					getPreviousSlide();
 				break;
 				case 39: 
-					console.log("Get Next Slide");
 					getNextSlide();
 				break;
 				default: return;
 			}
 			e.preventDefault();
 		}
-
 	}
+
 
 	function slide(index, slide) {
 		this.id = index;

@@ -31,8 +31,8 @@ var presentation = (function() {
 
 		// Establish event hanlers
 		$(".start").click(function(event) {
-			showAllMiniatures();
 			var indexOfPar = $(this).parent().index() - 1 // number of element in array starts from 0 (zero)
+			showAllMiniatures();
 			currentPres = indexOfPar;
 			currentSlide = startSlide;
 			hideMiniature($(this).parent())
@@ -54,8 +54,8 @@ var presentation = (function() {
 	}
 
 	function setSlideActive() {
-		setAllSlideInactive();
 		var id = getIdBySlide();
+		setAllSlideInactive();
 		$("#" + id).addClass("active").removeClass("inactive");
 		setURLFromSlide(id);
 	}
@@ -93,8 +93,8 @@ var presentation = (function() {
 
 	// Get slide from hash
 	function setSlideFromURL() {
-		var	hash = window.location.hash;
-		var id = hash.replace('#','');
+		var	hash = window.location.hash,
+			id = hash.replace('#','');
 		if (id) getSlideById(id);
 	}
 

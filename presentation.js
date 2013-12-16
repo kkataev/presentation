@@ -105,7 +105,7 @@ var presentation = (function() {
 
 	function setAllSlideInactive() {
 		$(".slide").each( function(index) {
-			$(this).addClass("inactive").removeClass("actives");
+			$(this).addClass("inactive").removeClass("active");
 		})
 	}
 
@@ -135,7 +135,7 @@ var presentation = (function() {
 	}
 
 	return {
-		initialization: initialization,
+		initialization: initialization
 	}
 })();
 

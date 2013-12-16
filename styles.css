@@ -1,7 +1,10 @@
 body {
-	background: -webkit-radial-gradient(center, circle cover, #555a5f 0%, #1c1e20 100%);
-	background: -o-radial-gradient(center, circle cover, #555a5f 0%, #1c1e20 100%);
-	background: -ms-radial-gradient(center, circle cover, #555a5f 0%, #1c1e20 100%);
+	background: #555a5f; /* Old browsers */
+	background: -moz-radial-gradient(center, ellipse cover, #555a5f 0%, #1c1e20 100%); /* FF3.6+ */
+	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#555a5f), color-stop(100%,#1c1e20)); /* Chrome,Safari4+ */
+	background: -webkit-radial-gradient(center, ellipse cover, #555a5f 0%,#1c1e20 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-radial-gradient(center, ellipse cover, #555a5f 0%,#1c1e20 100%); /* Opera 12+ */
+	background: -ms-radial-gradient(center, ellipse cover, #555a5f 0%,#1c1e20 100%); /* IE10+ */
 	color: #eeeeee;
 }
 .wrapper {
@@ -48,4 +51,8 @@ body {
 .slide.miniature {
 	font-size: 50%;
 	text-align: center;
+}
+.slide.active {
+	border-radius: 10px;
+	border: 1px solid #eeeeee;
 }

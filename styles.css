@@ -1,8 +1,51 @@
+body {
+	background: -webkit-radial-gradient(center, circle cover, #555a5f 0%, #1c1e20 100%);
+	background: -o-radial-gradient(center, circle cover, #555a5f 0%, #1c1e20 100%);
+	background: -ms-radial-gradient(center, circle cover, #555a5f 0%, #1c1e20 100%);
+	color: #eeeeee;
+}
+.wrapper {
+	width: 700px;
+	margin: 0 auto;
+}
+.header {
+	margin-top: 50px;
+}
+.presentation {
+	display: inline-block;
+}
 .active {
-	width: 1000px;
-	height: 750px;
+	width: 700px;
+	height: 500px;
 	margin: auto;
 }
 .inactive {
 	display: none;
+}
+.start, .stop {
+	text-align: center;
+	display: block;
+	text-decoration: none;
+}
+.start:hover, .stop:hover {
+	cursor: pointer;
+	text-decoration: underline;
+}
+.miniature {
+	display: block;
+	width: 200px;
+	height: 150px;
+	font-size: 10px;
+}
+.slide h1 {
+	font-size: 5em;
+	text-align: center;
+}
+.slide p {
+	font-size: 2.5em;
+	text-align: center;
+}
+.slide.miniature {
+	font-size: 50%;
+	text-align: center;
 }

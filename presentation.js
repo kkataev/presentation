@@ -1,4 +1,3 @@
-
 var presentation = (function() {
 
 	var data = [];
@@ -14,7 +13,7 @@ var presentation = (function() {
 		$(".presentation").each( function (index) {
 			var slides = [];
 			var mainElem = $(this);
-			var startLink = $( "<a href='#' class='start'>View presentation</a>" );
+			var startLink = $( "<span class='start'>View presentation</span>" );
 			mainElem.append(startLink);
 
 			setAllSlideInactive();
@@ -27,31 +26,42 @@ var presentation = (function() {
 			console.log(data);
 		})
 		
+		showAllMiniatures();
+
 		setSlideFromURL();
 
-		$(".start").click(function() {
-			currentPres = $(this).parent().index();
+		$(".start").click(function(event) {
+			showAllMiniatures();
+			var indexOfPar = $(this).parent().index() - 1 // number of element in array starts from 0 (zero)
+			currentPres = indexOfPar;
 			currentSlide = startSlide;
-			setSlideActive(currentPres, currentSlide);
+			hideMiniature($(this).parent())
+			setSlideActive();
 		});
 
 		arrowsEventHandler();
 
 	}
 
-	function setSlideActive(currP, currS) {
-		setAllSlideInactive();
-		$("#" + data[currP][currS].slideId).addClass("active").removeClass("inactive");
-	}
-
-	function setAllSlideInactive() {
-		$(".slide").each( function(index) {
-			$(this).addClass("inactive").removeClass("actives");
+	function showAllMiniatures() {
+		$(".presentation").each( function (index) {
+			$(this).find(".slide").first().addClass("miniature");
 		})
 	}
 
+	function hideMiniature(main) {
+		$(main).find(".slide").first().removeClass("miniature");
+	}
+
+	function setSlideActive() {
+		setAllSlideInactive();
+		console.log(currentPres + " " + currentSlide);
+		var id = getIdBySlide();
+		$("#" + id).addClass("active").removeClass("inactive");
+		setURLFromSlide(id);
+	}
+
 	function getSlideById(id) {
-		console.log(data.length)
 		for (var i = 0; i < data.length; i++) {
 			for (var _i = 0; _i < data[i].length; _i++){
 				if (data[i][_i].slideId == id) {
@@ -60,7 +70,8 @@ var presentation = (function() {
 				}
 			}
 		}
-		setSlideActive(currentPres, currentSlide);
+		hideMiniature($("#" + id).parent());
+		setSlideActive();
 	}
 
 	function getIdBySlide() {
@@ -70,20 +81,14 @@ var presentation = (function() {
 	function getNextSlide() {
 		if (data[currentPres][currentSlide + 1]) {
 			currentSlide += 1;
-			setSlideActive(currentPres, currentSlide);
-
-			var id = getIdBySlide();
-			setURLFromSlide(id);
+			setSlideActive();
 		}
 	}	
 
 	function getPreviousSlide() {
 		if (data[currentPres][currentSlide - 1]) {
 			currentSlide -= 1;
-			setSlideActive(currentPres, currentSlide);
-
-			var id = getIdBySlide();
-			setURLFromSlide(id);
+			setSlideActive();
 		}
 	}	
 
@@ -96,6 +101,12 @@ var presentation = (function() {
 
 	function setURLFromSlide(id) {
 		window.location.hash = id;
+	}
+
+	function setAllSlideInactive() {
+		$(".slide").each( function(index) {
+			$(this).addClass("inactive").removeClass("actives");
+		})
 	}
 
 	// Set handlers for "arrow" keys 
